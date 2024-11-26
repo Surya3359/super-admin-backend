@@ -27,24 +27,24 @@ router.get('/:id', async (req,res) => {
     }
 })
 
-//search filter
-router.get('/search', async (req, res) => {
+// Search route
+router.get("/search", async (req, res) => {
+    const query = req.query.query;
+  
     try {
-        const { query } = req.query; // Get the search query from the URL
-        const regex = new RegExp(query, 'i'); // Case-insensitive regex
-        const results = await Employee.find({
-            $or: [
-                { Employee_name: regex }, // Search by name
-                { Employee_id: regex },   // Search by ID
-            ]
-        });
-        res.json(results);
+      const employees = await Employee.find({
+        $or: [
+          { Employee_name: { $regex: query, $options: "i" } }, // Case-insensitive match
+          { Email_id: { $regex: query, $options: "i" } },
+          { Employee_id: { $regex: query, $options: "i" } },
+        ],
+      });
+  
+      res.status(200).json(employees);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
+      res.status(500).json({ error: "Failed to search employees" });
     }
-});
-
+  });
 
 
 //create an employee
@@ -55,7 +55,8 @@ router.post('/', async (req, res) => {
         Password:req.body.Password,
         Email_id: req.body.Email_id,
         Employee_status: req.body.Employee_status,
-        Mac_address: req.body.Mac_address
+        Mac_address: req.body.Mac_address,
+        Phone_number: req.body.Phone_number
     });
     try {
         const newEmp = await employee.save();
@@ -83,7 +84,7 @@ router.put('/:id', async (req, res) => {
         employee.Email_id = req.body.Email_id || employee.Email_id;
         employee.Employee_status = req.body.Employee_status !== undefined ? req.body.Employee_status : employee.Employee_status;
         employee.Mac_address = req.body.Mac_address || employee.Mac_address;
-        
+        employee.Phone_number = req.body. Phone_number || employee.Phone_number;
         // Set UpdatedAt field to current time
         employee.UpdatedAt = Date.now();
 

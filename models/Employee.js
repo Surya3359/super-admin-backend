@@ -8,6 +8,15 @@ const EmployeeSchema = new mongoose.Schema({
     Employee_id: {type: String, require: true, unique: true},
     Employee_name:{type: String, require: true},
     Password:{type: String, require: true},
+    Phone_number:{type: String,
+        required: true,
+        unique: true,
+        validate: {
+            validator: function(v) {
+                return /^\+?(\d{1,3})?[-.\s]?(\(\d{1,4}\)|\d{1,4})[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(v);
+            },
+            message: props => `${props.value} is not a valid phone number!`
+        }},
     Email_id: {
         type: String,
         trim: true,

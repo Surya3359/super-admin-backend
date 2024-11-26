@@ -25,8 +25,28 @@
         "Password": "safePassword789",
         "Hosted_sites": 10,
         "Email_id": "carla.williams@example.com",
-        "phone_number": "123-456-7890",
+        "phone_number": "123363663564",
         "Admin_status": true,
         "Address": "789 Oak Road, Metropolis, NY"
+    },
+    {
+        "Admin_id": "A1004",
+        "Admin_name": "Horus Luperical",
+        "Password": "safePassword789",
+        "Hosted_sites": 500,
+        "Email_id": "lunawolf@example.com",
+        "phone_number": "344343455534",
+        "Admin_status": true,
+        "Address": "cathonia, near terra"
+    },
+    {
+        "Admin_id": "A1005",
+        "Admin_name": "Corvus Corax",
+        "Password": "safePassword789",
+        "Hosted_sites": 500,
+        "Email_id": "ravenguard@example.com",
+        "phone_number": "234234235t632",
+        "Admin_status": true,
+        "Address": "Deliverance Moon, Forge World"
     }
 ]
