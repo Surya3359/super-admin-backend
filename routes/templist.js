@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path'); 
+const fs = require('fs').promises;
 const TemplateList = require('../models/TemplateList');
 const Employee = require('../models/Employee');
-const templateAdmin = require('../models/templateAdmin');
+const unzipFolder = require('./unzipapp');
 
 //Get all templates
 router.get('/',async (req,res) => {
@@ -17,12 +19,41 @@ router.get('/',async (req,res) => {
 router.get('/:id', async (req, res) => {
     try {
         const temp = await TemplateList.findById(req.params.id);
+
         if (!TemplateList) {
             res.status(404).json({message:"Template Not Found"})
         }
         res.json(temp);
     } catch (error) {
         res.status(500).json({message: error.message})
+    }
+})
+
+router.get('/unzip/:id', async (req, res)=>{
+ try {
+        // Fetch the template by ID
+        const temp = await TemplateList.findById(req.params.id);
+        if (!temp) {
+            return res.status(404).json({ message: 'Template not found' });
+        }
+
+        const zipFilePath = path.resolve(temp.FilePath); // Assuming this field exists
+        const extractToPath = path.resolve(__dirname, '../Unzipped_templates');
+
+        try {
+            await fs.access(zipFilePath);
+        } catch (err) {
+            return res.status(404).json({ message: `File not found at ${zipFilePath}` });
+        }
+
+        // Ensure the unzip process is awaited
+        await unzipFolder(zipFilePath, extractToPath);
+        console.log("Extraction complete");
+
+        res.json({ message: "Extraction successful", data: temp });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: error.message });
     }
 })
 
@@ -38,6 +69,8 @@ router.post('/',async (req, res) => {
         Temp_status:req.body.Temp_status,
         CreatedBy:req.body.CreatedBy,
         TestedBy:req.body.TestedBy,
+        FilePath:req.body.FilePath,
+        templateUrl:req.body.templateUrl,
         Approval_status:req.body.Approval_status,
         CompletedDate:req.body.CompletedDate,
         ApprovedDate:req.body.ApprovedDate,
@@ -69,6 +102,8 @@ router.put('/:id', async (req, res) => {
         template.Temp_status = req.body.Temp_status || template.Temp_status;
         template.CreatedBy = req.body.CreatedBy || template.CreatedBy;
         template.TestedBy = req.body.TestedBy || template.TestedBy;
+        template.FilePath = req.body.FilePath || template.FilePath;
+        template.templateUrl = req.body.templateUrl || template.templateUrl;
         template.Approval_status = req.body.Approval_status || template.Approval_status;
         template.CompletedDate = req.body.CompletedDate || template.CompletedDate;
         template.ApprovedDate = req.body.ApprovedDate || template.ApprovedDate;
