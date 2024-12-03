@@ -5,6 +5,7 @@ const fs = require('fs').promises;
 const TemplateList = require('../models/TemplateList');
 const Employee = require('../models/Employee');
 const unzipFolder = require('./unzipapp');
+
  
 //Get all templates
 router.get('/',async (req,res) => {
@@ -45,7 +46,7 @@ router.get('/unzip/:id', async (req, res) => {
         }
 
         const zipFilePath = path.resolve(temp.FilePath); // Assuming this field exists
-        const extractToPath = path.resolve(__dirname, '../Unzipped_templates');
+        const extractToPath = path.resolve('../../super-admin Frontend/superAdmin-frontend/public/Unzipped_Templates');
 
         try {
             await fs.access(zipFilePath);
