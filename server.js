@@ -10,11 +10,13 @@ const paymentRoutes = require('./routes/payment')
 const clientRoutes = require('./routes/clientdetails')
 const bugreportRoutes = require('./routes/bugreport')
 const taskRoutes = require('./routes/taskReports')
+const SuperAdminRoutes = require('./routes/superAdminRoute')
 const app=express();
 const PORT = process.env.PORT || 8000;
 const cors = require("cors");
+const dotenv = require('dotenv')
 
-
+dotenv.config();
 //middle ware
 app.use(cors());
 app.use(express.json());
@@ -23,12 +25,23 @@ app.use(express.json());
 app.use(bodyParser.json())
 
 //Connect to mongo Db
-mongoose.connect("mongodb://localhost:27017/super-admin")
+mongoose
 
+  .connect(process.env.MONGO_URI, {
 
-.then(()=> console.log('MongoDb Connected'))
-.catch(err=> console.error('DB Error',err));
+    useNewUrlParser: true,
+
+    useUnifiedTopology: true,
+
+  })
+
+  .then(() => console.log('Connected to MongoDB'))
+
+  .catch((err) => console.error('Failed to connect to MongoDB:', err));
+ 
+
 //use routes
+app.use('/api/auth',SuperAdminRoutes);
 app.use('/api/employees', empRoutes);
 app.use('/api/admins', adminRoutes);
 app.use('/api/templist', tempRoutes);
@@ -41,5 +54,5 @@ app.use('/api/taskreports', taskRoutes);
 
 
 
-app.listen(PORT ,()=>console.log(`Server Running On PORT  ${PORT}`));
+app.listen(PORT ,()=>console.log(`Server Running On PORT  ${PORT}`,process.env.MONGO_URI));
 
