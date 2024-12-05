@@ -46,7 +46,7 @@ router.get('/unzip/:id', async (req, res) => {
         }
 
         const zipFilePath = path.resolve(temp.FilePath); // Assuming this field exists
-        const extractToPath = path.resolve('../../super-admin Frontend/superAdmin-frontend/public/Unzipped_Templates');
+        const extractToPath = path.resolve('../superAdmin-frontend/public/Unzipped_Templates');
 
         try {
             await fs.access(zipFilePath);
@@ -79,6 +79,7 @@ router.post('/',async (req, res) => {
         TestedBy:req.body.TestedBy,
         FilePath:req.body.FilePath,
         templateUrl:req.body.templateUrl,
+        usePort:req.body.usePort,
         Approval_status:req.body.Approval_status,
         CompletedDate:req.body.CompletedDate,
         ApprovedDate:req.body.ApprovedDate,
@@ -111,6 +112,7 @@ router.put('/:id', async (req, res) => {
         template.CreatedBy = req.body.CreatedBy || template.CreatedBy;
         template.TestedBy = req.body.TestedBy || template.TestedBy;
         template.FilePath = req.body.FilePath || template.FilePath;
+        template.usePort = req.body.usePort || template.usePort;
         template.templateUrl = req.body.templateUrl || template.templateUrl;
         template.Approval_status = req.body.Approval_status || template.Approval_status;
         template.CompletedDate = req.body.CompletedDate || template.CompletedDate;

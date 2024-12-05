@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const HostedSite = require('../models/HostedSite');
-const { route } = require('./templist');
-const TemplateList = require('../models/TemplateList');
-const templateAdmin = require('../models/templateAdmin');
+
 
 
 //Get All Sites

@@ -10,6 +10,7 @@ const TemplateSchema = new mongoose.Schema({
     Approval_status:{type: String, require: true},
     FilePath: {type: String, require: true},
     templateUrl:{type: String, require: true},
+    usePort:{type:Number, require:true},
     CompletedDate:{
         type: Date,
         required: true,
